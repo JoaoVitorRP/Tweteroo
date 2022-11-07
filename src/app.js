@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(cors());
 
 const user = [];
-const tweets = [];
+let tweets = [];
 
 app.post("/sign-up", (req, res) => {
   const { username, avatar } = req.body;
@@ -29,11 +29,17 @@ app.post("/tweets", (req, res) => {
     return;
   }
 
+  if (tweets.length === 10) {
+    tweets = tweets.filter((twt, index) => index > 0);
+  }
+
   tweets.push({
     username,
     avatar: `${user[user.length - 1].avatar}`,
     tweet,
   });
+
+  console.log(tweets);
 
   res.send("OK");
 });
